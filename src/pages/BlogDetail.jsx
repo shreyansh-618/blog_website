@@ -21,9 +21,15 @@ const BlogDetail = () => {
     <div className="container mx-auto mt-8 p-4 bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-bold mb-2">{blog.title}</h1>
       <p className="text-gray-600 mb-2">
-        By {blog.author} on {blog.date}{" "}
-        {/* This will now show the correct date */}
+        By {blog.author} on {blog.date}
       </p>
+      {blog.image && (
+        <img
+          src={blog.image}
+          alt="Blog Post"
+          className="w-full h-auto max-h-80 object-cover rounded-lg mb-4"
+        />
+      )}
       <p className="text-gray-800 mt-4">{blog.content}</p>
     </div>
   );

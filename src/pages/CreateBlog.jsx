@@ -5,8 +5,13 @@ import { usePosts } from "../context/PostsContext";
 const CreateBlog = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [image, setImage] = useState(null); // New image state
   const { addPost } = usePosts();
   const navigate = useNavigate();
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]); // Capture the file
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,8 +19,9 @@ const CreateBlog = () => {
       id: Date.now(),
       title,
       content,
-      author: JSON.parse(localStorage.getItem("user")).name, // Get the username from localStorage
-      date: new Date().toLocaleDateString(), // Get the current date in a readable format
+      image: URL.createObjectURL(image), // Add image URL if it exists
+      author: JSON.parse(localStorage.getItem("user")).name,
+      date: new Date().toLocaleDateString(),
     };
     addPost(newPost);
     navigate("/posts");
@@ -29,9 +35,7 @@ const CreateBlog = () => {
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-lg font-semibold text-gray-700">
-              Title
-            </label>
+            <label className="block text-lg font-semibold text-gray-700">Title</label>
             <input
               type="text"
               value={title}
@@ -42,15 +46,22 @@ const CreateBlog = () => {
             />
           </div>
           <div>
-            <label className="block text-lg font-semibold text-gray-700">
-              Content
-            </label>
+            <label className="block text-lg font-semibold text-gray-700">Content</label>
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
               className="w-full h-40 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Write your blog content here..."
               required
+            />
+          </div>
+          <div>
+            <label className="block text-lg font-semibold text-gray-700">Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
           <button
